@@ -25,11 +25,18 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => HomeScreen(),
-              ),
-            );
+            if(state.loginModel.success!){
+              CasheHelper.saveData(key: 'token', value: state.loginModel.data!.token).then((value) {
+                token=state.loginModel.data!.token;
+              });
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(),
+                ),
+              );
+              emailController.clear();
+              passwordController.clear();
+            }
           } else if (state is LoginErrorState) {
             emailController.clear();
             passwordController.clear();
@@ -166,7 +173,7 @@ class LoginScreen extends StatelessWidget {
                               borderRadius: 10.r,
                             )
                           : const Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(color:Colors.teal,),
                             ),
                       SizedBox(
                         height: 3.h,

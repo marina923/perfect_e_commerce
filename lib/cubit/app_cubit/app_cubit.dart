@@ -21,19 +21,6 @@ class AppCubit extends Cubit<AppStates> {
 
 
 
-  // LoginModel? userData;
-  // void getUserData() {
-  //   DioHelper.getData(url: LOGIN, token: token).then((value) {
-  //     userData = LoginModel.fromJson(value.data);
-  //     nameController.text = userData!.data!.name;
-  //     emailController.text = userData!.data!.email;
-  //     phoneController.text = userData!.data!.phone;
-  //     emit(AppGetUserDataSuccessState());
-  //   }).catchError((error) {
-  //     print('the error is ===> ${error.toString()}');
-  //     emit(AppGetUserDataErrorState(error.toString()));
-  //   });
-  // }
 
   var nameController = TextEditingController();
   var emailController = TextEditingController();

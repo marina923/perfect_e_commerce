@@ -1,6 +1,8 @@
 
 
 
+import 'package:perfect_e_commerce/models/ClientModel.dart';
+
 abstract class LoginStates {}
 
 class LoginInitialState extends LoginStates {}
@@ -8,9 +10,9 @@ class LoginInitialState extends LoginStates {}
 class ChangePasswordVisibility extends LoginStates {}
 
 class LoginSuccessState extends LoginStates {
-  // final LoginModel loginModel;
-  //
-  // LoginSuccessState(this.loginModel);
+  final ClientModel loginModel;
+
+  LoginSuccessState(this.loginModel);
 }
 
 class LoginLoadingState extends LoginStates {}

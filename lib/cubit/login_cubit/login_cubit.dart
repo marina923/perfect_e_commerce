@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:perfect_e_commerce/cubit/login_cubit/login_states.dart';
+import 'package:perfect_e_commerce/models/ClientModel.dart';
 import '../../network/network/dio_helper.dart';
 import '../../shared/constants.dart';
 
@@ -19,6 +20,7 @@ class LoginCubit extends Cubit<LoginStates> {
         : passwordIcon = Icons.visibility_off;
     emit(ChangePasswordVisibility());
   }
+  ClientModel loginModel = ClientModel();
 
   void userLogin({
     required String email,
@@ -33,8 +35,8 @@ class LoginCubit extends Cubit<LoginStates> {
         'type':'login',
       },
     ).then((value) {
-      print(value.data);
-      emit(LoginSuccessState());
+      loginModel = ClientModel.fromJson(value.data);
+      emit(LoginSuccessState(loginModel));
     }).catchError((error) {
       emit(LoginErrorState(error.toString()));
     });

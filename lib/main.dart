@@ -19,18 +19,13 @@ void main() async {
   bool? onBoarding = CasheHelper.getData(key: 'onBoarding');
   token = CasheHelper.getData(key: 'token');
   Widget? startWidget;
-  if (onBoarding != null) {
-    if (token != null) {
-      startWidget =  HomeScreen();
-    } else {
-      startWidget = LoginScreen();
-    }
-  } else {
+  if (onBoarding == null) {
+
     startWidget =  OnBoardingScreen();
   }
   runApp(
     MyApp(
-      startWidget: startWidget,
+      startWidget: startWidget!,
     ),
   );
 }
@@ -52,10 +47,8 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: () => MaterialApp(
               builder: (context, widget) {
-                //add this line
                 ScreenUtil.setContext(context);
                 return MediaQuery(
-                  //Setting font does not change with system font size
                   data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                   child: widget!,
                 );

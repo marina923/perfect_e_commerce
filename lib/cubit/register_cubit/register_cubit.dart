@@ -41,14 +41,11 @@ class RegisterCubit extends Cubit<RegisterStates> {
         'role': "3",
       },
     ).then((value) {
-      // print("status code ======>>>${value.statusCode}");
-      // print("The data =======>>>>> ${value.data}");
+
       registerModel = ClientModel.fromJson(value.data);
       emit(RegisterSuccessState(registerModel));
     }).catchError((error) {
-      print(error.toString());
       if (error is DioError) {
-        print(error.response!.data['message']);
         emit(RegisterErrorState('${error.response!.data['message']}'));
       }
     });

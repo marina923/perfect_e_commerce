@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:perfect_e_commerce/cubit/home_cubit/home_cubit.dart';
 import 'package:perfect_e_commerce/cubit/home_cubit/home_states.dart';
-import 'package:perfect_e_commerce/models/HomeModel.dart';
 import 'package:perfect_e_commerce/modules/login_module/login_screen.dart';
 import 'package:perfect_e_commerce/network/local/cashe_helper.dart';
 import 'package:perfect_e_commerce/shared/components/custom_card.dart';
