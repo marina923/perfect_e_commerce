@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:perfect_e_commerce/cubit/register_cubit/register_states.dart';
+import 'package:perfect_e_commerce/models/ClientModel.dart';
 
 import '../../network/network/dio_helper.dart';
 import '../../shared/constants.dart';
@@ -21,13 +23,12 @@ class RegisterCubit extends Cubit<RegisterStates> {
     emit(ChangePasswordVisibility());
   }
 
+  ClientModel registerModel = ClientModel();
   void registerUser({
     required String email,
     required String password,
     required String name,
     required String phone,
-
-
   }) async {
     emit(RegisterLoadingState());
     DioHelper.postData(
@@ -37,17 +38,19 @@ class RegisterCubit extends Cubit<RegisterStates> {
         'password': password,
         'name': name,
         'phone': phone,
-        'role':"3",
+        'role': "3",
       },
     ).then((value) {
-      print("status code ======>>>${value.statusCode}");
-      print("The data =======>>>>> ${value.data}");
-      emit(RegisterSuccessState());
+      // print("status code ======>>>${value.statusCode}");
+      // print("The data =======>>>>> ${value.data}");
+      registerModel = ClientModel.fromJson(value.data);
+      emit(RegisterSuccessState(registerModel));
     }).catchError((error) {
       print(error.toString());
-      emit(RegisterErrorState(error.toString()));
+      if (error is DioError) {
+        print(error.response!.data['message']);
+        emit(RegisterErrorState('${error.response!.data['message']}'));
+      }
     });
   }
-
-
 }

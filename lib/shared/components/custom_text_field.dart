@@ -47,7 +47,12 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: suffix != null
             ? IconButton(onPressed: suffixPressed, icon: Icon(suffix))
             : null,
-        border: OutlineInputBorder(),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.teal,
+            width: 2.0,
+          ),
+        ),
       ),
     );
   }

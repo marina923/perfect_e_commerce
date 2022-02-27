@@ -1,3 +1,4 @@
+import 'package:perfect_e_commerce/models/ClientModel.dart';
 
 abstract class RegisterStates {}
 
@@ -8,8 +9,8 @@ class ChangePasswordVisibility extends RegisterStates {}
 class RegisterLoadingState extends RegisterStates {}
 
 class RegisterSuccessState extends RegisterStates {
-  // final RegisterModel registerModel;
-  // RegisterSuccessState();
+  final ClientModel registerModel;
+  RegisterSuccessState(this.registerModel);
 }
 
 class RegisterErrorState extends RegisterStates {

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +12,12 @@ import '../../network/local/cashe_helper.dart';
 import '../../shared/components/custom_elevated_button.dart';
 import '../../shared/components/custom_text_field.dart';
 import '../../shared/constants.dart';
+
 var formKey = GlobalKey<FormState>();
 var emailController = TextEditingController();
 var passwordController = TextEditingController();
-class LoginScreen extends StatelessWidget {
 
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -25,26 +25,14 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-              // CasheHelper.saveData(
-              //     key: 'token', value: state.loginModel.data!.token)
-              //     .then((value) {
-              //   token = state.loginModel.data!.token;
-              //   Navigator.of(context).pushReplacement(
-              //     MaterialPageRoute(
-              //       builder: (context) =>  HomeScreen(),
-              //     ),
-              //   );
-              //   LoginCubit.get(context).emailController.clear();
-              //   LoginCubit.get(context).passwordController.clear();
-              // });
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) =>  HomeScreen(),
-                ),
-              );
-          }else {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(),
+              ),
+            );
+          } else if (state is LoginErrorState) {
             emailController.clear();
-           passwordController.clear();
+            passwordController.clear();
             Fluttertoast.showToast(
               msg: 'We were unable to login, Please! check the entered data',
               toastLength: Toast.LENGTH_LONG,
@@ -66,8 +54,8 @@ class LoginScreen extends StatelessWidget {
               padding: EdgeInsetsDirectional.only(
                 start: 20.w,
                 end: 20.w,
-                top:10.h,
-                bottom:10.h,
+                top: 10.h,
+                bottom: 10.h,
               ),
               child: SingleChildScrollView(
                 child: Form(
@@ -79,27 +67,27 @@ class LoginScreen extends StatelessWidget {
                         'Sign In',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize:0.12.sp,
+                          fontSize: 0.12.sp,
                           color: Colors.black,
                         ),
                       ),
                       SizedBox(
-                        height:100.h,
+                        height: 100.h,
                       ),
                       Text(
                         'Login to enjoy our hot offers',
                         style: TextStyle(
-                          fontSize:30.sp,
+                          fontSize: 30.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),
                       ),
                       SizedBox(
-                        height:15.h,
+                        height: 15.h,
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.only(
-                          start:1.w,
+                          start: 1.w,
                           end: 1.w,
                         ),
                         child: CustomTextFormField(
@@ -112,10 +100,10 @@ class LoginScreen extends StatelessWidget {
                             if (value!.isEmpty) {
                               return 'e-mail must not be empty';
                             } else if ((RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)) ==
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value)) ==
                                 false) {
-                              return 'Please! enter valid e-mail. EX: john@gmail.com';
+                              return 'Please! enter valid e-mail. EX: ex@gmail.com';
                             } else {
                               return null;
                             }
@@ -123,16 +111,15 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height:10.h,
+                        height: 10.h,
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.only(
-                          start:1.w,
-                          end:1.w,
+                          start: 1.w,
+                          end: 1.w,
                         ),
                         child: CustomTextFormField(
-                          controller:
-                          passwordController,
+                          controller: passwordController,
                           keyboardType: TextInputType.visiblePassword,
                           label: 'Password',
                           isPassword: LoginCubit.get(context).isPasswordHidden,
@@ -141,16 +128,6 @@ class LoginScreen extends StatelessWidget {
                           validationMode: AutovalidateMode.onUserInteraction,
                           suffixPressed: () {
                             LoginCubit.get(context).changePasswordVisibility();
-                          },
-                          onSubmit: (value) {
-                            if (formKey.currentState!.validate()) {
-                              LoginCubit.get(context).userLogin(
-                                email: emailController
-                                    .text,
-                                password: passwordController
-                                    .text,
-                              );
-                            }
                           },
                           validate: (value) {
                             if (value!.isEmpty) {
@@ -164,37 +141,35 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height:4.h,
+                        height: 4.h,
                       ),
                       state is! LoginLoadingState
                           ? CustomElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            LoginCubit.get(context).userLogin(
-                              email: emailController
-                                  .text,
-                              password: passwordController
-                                  .text,
-                            );
-                          }
-                        },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            fontSize:16.sp,
-                            color: Colors.white,
-                            letterSpacing: 3,
-                          ),
-                        ),
-                        color:Colors.black,
-                        height:50.h,
-                        borderRadius: 10.r,
-                      )
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  LoginCubit.get(context).userLogin(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Login',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white,
+                                  letterSpacing: 3,
+                                ),
+                              ),
+                              color: Colors.black,
+                              height: 50.h,
+                              borderRadius: 10.r,
+                            )
                           : const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                              child: CircularProgressIndicator(),
+                            ),
                       SizedBox(
-                        height:3.h,
+                        height: 3.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -202,11 +177,11 @@ class LoginScreen extends StatelessWidget {
                           Text(
                             'Don\'t have an account?',
                             style: TextStyle(
-                              fontSize:17.sp,
+                              fontSize: 17.sp,
                             ),
                           ),
                           SizedBox(
-                            width:0.01.w,
+                            width: 0.01.w,
                           ),
                           TextButton(
                             onPressed: () {

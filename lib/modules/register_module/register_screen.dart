@@ -8,22 +8,24 @@ import 'package:perfect_e_commerce/cubit/register_cubit/register_states.dart';
 import '../../shared/components/custom_elevated_button.dart';
 import '../../shared/components/custom_text_field.dart';
 import '../login_module/login_screen.dart';
+
 var emailController = TextEditingController();
 var passwordController = TextEditingController();
 var nameController = TextEditingController();
 var phoneController = TextEditingController();
 var formKey = GlobalKey<FormState>();
+
 class Register extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider(
       create: (context) => RegisterCubit(),
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
           if (state is RegisterSuccessState) {
+            if (state.registerModel.success!) {
               Fluttertoast.showToast(
-                msg: 'Registered Successifully',
+                msg: state.registerModel.message!,
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 5,
@@ -40,11 +42,9 @@ class Register extends StatelessWidget {
               nameController.clear();
               phoneController.clear();
               passwordController.clear();
-
+            }
           } else if (state is RegisterErrorState) {
-
             Fluttertoast.showToast(
-              //state.error
               msg: state.error,
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
@@ -66,7 +66,7 @@ class Register extends StatelessWidget {
             ),
             body: Padding(
               padding: EdgeInsetsDirectional.only(
-                start:20.w,
+                start: 20.w,
                 end: 20.w,
                 top: 20.h,
                 bottom: 20.h,
@@ -86,7 +86,7 @@ class Register extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height:20.h,
+                        height: 20.h,
                       ),
                       Text(
                         'Register to enjoy our hot offers',
@@ -97,7 +97,7 @@ class Register extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height:20.h,
+                        height: 20.h,
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.only(
@@ -128,8 +128,7 @@ class Register extends StatelessWidget {
                           end: 3.w,
                         ),
                         child: CustomTextFormField(
-                          controller:
-                          emailController,
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           label: 'E-mail',
                           prefix: const Icon(Icons.mail_outline),
@@ -138,8 +137,8 @@ class Register extends StatelessWidget {
                             if (value!.isEmpty) {
                               return 'e-mail must not be empty';
                             } else if ((RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)) ==
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value)) ==
                                 false) {
                               return 'Please! enter valid e-mail. EX: john@gmail.com';
                             } else {
@@ -149,16 +148,15 @@ class Register extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height:10.h,
+                        height: 10.h,
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.only(
-                          start:3.w,
+                          start: 3.w,
                           end: 3.w,
                         ),
                         child: CustomTextFormField(
-                          controller:
-                          phoneController,
+                          controller: phoneController,
                           keyboardType: TextInputType.phone,
                           label: 'Phone Number',
                           prefix: const Icon(Icons.phone),
@@ -176,20 +174,19 @@ class Register extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height:10.h,
+                        height: 10.h,
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.only(
-                          start:3.w,
+                          start: 3.w,
                           end: 3.w,
                         ),
                         child: CustomTextFormField(
-                          controller:
-                          passwordController,
+                          controller: passwordController,
                           keyboardType: TextInputType.visiblePassword,
                           label: 'Password',
                           isPassword:
-                          RegisterCubit.get(context).isPasswordHidden,
+                              RegisterCubit.get(context).isPasswordHidden,
                           prefix: const Icon(Icons.lock),
                           suffix: RegisterCubit.get(context).passwordIcon,
                           validationMode: AutovalidateMode.onUserInteraction,
@@ -209,39 +206,35 @@ class Register extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height:4.h,
+                        height: 4.h,
                       ),
                       state is! RegisterLoadingState
                           ? CustomElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            RegisterCubit.get(context).registerUser(
-                              email:emailController
-                                  .text,
-                              password: passwordController
-                                  .text,
-                              name: nameController
-                                  .text,
-                              phone: phoneController
-                                  .text,
-                            );
-                          }
-                        },
-                        child: Text(
-                          'Register',
-                          style: TextStyle(
-                            fontSize:16.sp,
-                            color: Colors.white,
-                            letterSpacing: 3,
-                          ),
-                        ),
-                        color: Colors.black,
-                        height:40.h,
-                        borderRadius: 10.r,
-                      )
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  RegisterCubit.get(context).registerUser(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                    name: nameController.text,
+                                    phone: phoneController.text,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white,
+                                  letterSpacing: 3,
+                                ),
+                              ),
+                              color: Colors.black,
+                              height: 40.h,
+                              borderRadius: 10.r,
+                            )
                           : const Center(
-                            child: CircularProgressIndicator(),
-                      ),
+                              child: CircularProgressIndicator(),
+                            ),
                     ],
                   ),
                 ),
